@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Stripe API",
+    "url": "https://stripe.com/docs/api",
+    "category": "Payments",
+    "baseUrl": "https://api.stripe.com/v1",
+    "authMethod": "Bearer Token (Secret Key)",
+    "description": "The industry standard for payment processing, subscription billing, and invoicing. Highly reliable with exhaustive documentation.",
+    "tags": ["Payments", "Subscriptions", "SaaS"],
+    "keywords": ["stripe", "payments", "checkout", "billing", "subscriptions", "credit card", "invoicing"]
+  },
+  {
+    "name": "Resend API",
+    "url": "https://resend.com/docs",
+    "category": "Communications",
+    "baseUrl": "https://api.resend.com",
+    "authMethod": "Bearer Token",
+    "description": "Modern email API built for developers. Offers simple React-email templates and high deliverability rates compared to legacy providers.",
+    "tags": ["Email", "React Email", "Marketing"],
+    "keywords": ["email", "resend", "newsletter", "marketing", "transactional", "sendgrid alternative"]
+  }
+]

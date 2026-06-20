@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agentic Knowledge Base | mAIstermind Stack</title>
+  <meta name="description" content="A comprehensive knowledge base for AI Agents. Discover repositories, coding skills, API endpoints, and MCP servers. Submit new URLs for automated analysis via Antigravity.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- Dashboard Header -->
+    <header>
+      <div class="header-content">
+        <div class="logo-section">
+          <h1>
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+            Agentic Knowledge Base
+          </h1>
+          <p>Centralized resource directory for Antigravity, AI Studio, & Stitch</p>
+        </div>
+        <div class="header-actions">
+          <button id="submit-resource-btn" class="btn btn-outline">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Submit Resource
+          </button>
+          <button id="open-wizard-btn" class="btn btn-primary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/>
+              <path d="M9 18h6M10 22h4"/>
+            </svg>
+            Antigravity Recommender
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Entity Navigation Tabs -->
+    <nav class="entity-nav">
+      <button class="nav-tab active" data-entity="repositories">Repositories</button>
+      <button class="nav-tab" data-entity="skills">Skills & Patterns</button>
+      <button class="nav-tab" data-entity="apis">APIs</button>
+      <button class="nav-tab" data-entity="mcps">MCP Servers</button>
+    </nav>
+
+    <!-- Search and Filtering Section -->
+    <section class="search-filter-section">
+      <div class="search-box">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="search-input" placeholder="Search knowledge base by keywords (e.g. leads, database, scraping)...">
+      </div>
+      
+      <div class="categories-container" id="categories-container">
+        <!-- Categories pills will be dynamically generated here -->
+      </div>
+    </section>
+
+    <!-- Results Status Info -->
+    <div class="results-header">
+      <div class="results-count" id="results-count">Loading resources...</div>
+    </div>
+
+    <!-- Cards Grid -->
+    <main class="repo-grid" id="repo-grid">
+      <!-- Entity cards will be dynamically generated and injected here -->
+    </main>
+
+    <!-- Page Footer -->
+    <footer>
+      <div class="footer-links">
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://aistudio.google.com" target="_blank" rel="noopener noreferrer">Google AI Studio</a>
+      </div>
+      <p>&copy; 2026 mAIstermind. Built to guide autonomous AI agents.</p>
+    </footer>
+
+  </div>
+
+  <!-- Recommender Wizard Modal -->
+  <div class="modal-overlay" id="wizard-modal">
+    <div class="modal-container">
+      
+      <div class="modal-header">
+        <h2 class="modal-title">Antigravity Recommender Wizard</h2>
+        <button class="modal-close" id="close-wizard-btn" aria-label="Close modal">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="modal-body">
+        <p class="wizard-step-title">Select a project pattern or enter your custom idea to get a prompt for Antigravity:</p>
+        
+        <!-- Preset options -->
+        <div class="preset-options">
+          <button class="preset-btn" data-preset="scraping">
+            <span class="preset-btn-title">Stealth Web Scraping</span>
+            <span class="preset-btn-desc">Bypass bot detection & extract page accessibility trees</span>
+          </button>
+          <button class="preset-btn" data-preset="video">
+            <span class="preset-btn-title">Programmatic Video</span>
+            <span class="preset-btn-desc">Render automated video files using simple HTML/CSS</span>
+          </button>
+          <button class="preset-btn" data-preset="trading">
+            <span class="preset-btn-title">Algo & Finance Trading</span>
+            <span class="preset-btn-desc">Hedge funds, Bloomberg terminal dashboard, simulations</span>
+          </button>
+          <button class="preset-btn" data-preset="email">
+            <span class="preset-btn-title">Agentic Email Inbox</span>
+            <span class="preset-btn-desc">Sort, triage, and draft email responses automatically</span>
+          </button>
+        </div>
+
+        <div class="text-divider">Or describe it in your own words</div>
+
+        <!-- Text Description -->
+        <div class="idea-input-wrapper">
+          <textarea id="custom-idea-input" placeholder="e.g., I want to build a tool that generates automated video metrics cards for my clients, or a system to scrape e-commerce prices without getting blocked..."></textarea>
+          <button id="generate-recommendation-btn" class="btn btn-primary" style="margin-top: 0.5rem; align-self: flex-end;">
+            Analyze Idea
+          </button>
+        </div>
+
+        <!-- Recommendation Output Area -->
+        <div class="recommendation-result" id="recommendation-result">
+          <div class="card-badge result-badge">Best Match Recommended</div>
+          
+          <div class="recommended-repo-info">
+            <div class="recommended-name" id="rec-repo-name">Repository Name</div>
+            <div class="recommended-desc" id="rec-repo-desc">Brief explanation of why this fits.</div>
+          </div>
+
+          <div class="prompt-area">
+            <div class="field-label">Antigravity Instruction Prompt</div>
+            <div class="prompt-text" id="rec-prompt-text">Copyable prompt will appear here...</div>
+          </div>
+
+          <button id="copy-prompt-btn" class="btn btn-primary btn-sm" style="align-self: flex-start;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            Copy Prompt for Antigravity
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Hidden text area for Submit Resource copy logic -->
+  <textarea id="hidden-submit-prompt" style="position: absolute; left: -9999px;"></textarea>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast-notification">Prompt copied! Paste it to Antigravity.</div>
+
+  <script src="app.js"></script>
+</body>
+</html>

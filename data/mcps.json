@@ -1,0 +1,20 @@
+[
+  {
+    "name": "GitHub MCP",
+    "url": "https://github.com/modelcontextprotocol/servers/tree/main/src/github",
+    "category": "Version Control",
+    "setupCommand": "npx -y @modelcontextprotocol/server-github",
+    "description": "Provides agents with tools to read, search, and modify GitHub repositories. Essential for allowing Antigravity to review PRs or commit code.",
+    "tags": ["GitHub", "Git", "MCP Server"],
+    "keywords": ["github", "mcp", "git", "version control", "commits", "pull requests", "issues", "repositories"]
+  },
+  {
+    "name": "PostgreSQL MCP",
+    "url": "https://github.com/modelcontextprotocol/servers/tree/main/src/postgres",
+    "category": "Database",
+    "setupCommand": "npx -y @modelcontextprotocol/server-postgres postgresql://user:pass@localhost/db",
+    "description": "Allows an agent to connect to a PostgreSQL database, inspect the schema, and run analytical read-only queries directly.",
+    "tags": ["PostgreSQL", "Database", "MCP Server"],
+    "keywords": ["postgres", "postgresql", "mcp", "database", "sql", "queries", "schema", "tables"]
+  }
+]

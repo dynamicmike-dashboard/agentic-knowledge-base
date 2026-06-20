@@ -1,0 +1,13 @@
+{
+  "name": "agentic-knowledge-base",
+  "version": "1.0.0",
+  "description": "Agentic Knowledge Base Dashboard",
+  "main": "app.js",
+  "scripts": {
+    "build": "node sync-teable.js",
+    "start": "npx http-server"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  }
+}

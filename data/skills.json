@@ -1,0 +1,18 @@
+[
+  {
+    "name": "Setup Supabase Auth (Next.js)",
+    "category": "Authentication",
+    "description": "A robust pattern for setting up Supabase SSR authentication in a Next.js App Router application.",
+    "codeSnippet": "import { createServerClient, type CookieOptions } from '@supabase/ssr';\nimport { cookies } from 'next/headers';\n\nexport function createClient() {\n  const cookieStore = cookies();\n  return createServerClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, {\n    cookies: {\n      get(name: string) { return cookieStore.get(name)?.value; },\n    },\n  });\n}",
+    "tags": ["Next.js", "Supabase", "Auth"],
+    "keywords": ["login", "authentication", "supabase", "ssr", "cookies", "nextjs", "app router", "middleware"]
+  },
+  {
+    "name": "Rate Limiting with Upstash Redis",
+    "category": "Security",
+    "description": "Implement a fast, edge-compatible rate limiter for API routes using Upstash Redis to prevent abuse.",
+    "codeSnippet": "import { Ratelimit } from '@upstash/ratelimit';\nimport { Redis } from '@upstash/redis';\n\nconst redis = Redis.fromEnv();\nconst ratelimit = new Ratelimit({\n  redis: redis,\n  limiter: Ratelimit.slidingWindow(10, '10 s'),\n});\n\n// Usage inside API route:\n// const { success } = await ratelimit.limit(ipIdentifier);",
+    "tags": ["Security", "Redis", "Rate Limit"],
+    "keywords": ["rate limiting", "upstash", "redis", "api protection", "ddos", "security", "edge"]
+  }
+]

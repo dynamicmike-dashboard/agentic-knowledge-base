@@ -1,0 +1,1 @@
+Rule: Every new agent session or project build must start by executing the `initialize_project` workflow. No code generation or terminal commands may run until the security scan and resource check are complete.
