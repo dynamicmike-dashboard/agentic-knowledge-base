@@ -68,7 +68,7 @@ export async function POST(req: Request) {
 
     // 3. Post to Teable
     const teableKey = process.env.TEABLE_API_KEY;
-    const tableId = process.env.TEABLE_TABLE_ID;
+    const tableId = process.env.TEABLE_TABLE_ID || "tblyGpv8b7UekbcTNdP";
     
     const teableRes = await fetch(`https://app.teable.ai/api/table/${tableId}/record`, {
       method: 'POST',

@@ -2,10 +2,10 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
-    const tableId = process.env.TEABLE_TABLE_ID;
+    const tableId = process.env.TEABLE_TABLE_ID || "tblyGpv8b7UekbcTNdP";
     const apiKey = process.env.TEABLE_API_KEY;
 
-    if (!tableId || !apiKey) {
+    if (!apiKey) {
       return NextResponse.json({ error: 'Missing Teable credentials' }, { status: 500 });
     }
 

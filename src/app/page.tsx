@@ -1,6 +1,13 @@
 "use client";
 import { useState, useEffect } from "react";
 
+function loadQueue() {
+  try { return JSON.parse(localStorage.getItem("submitQueue") || "[]"); } catch { return []; }
+}
+function saveQueue(queue) {
+  localStorage.setItem("submitQueue", JSON.stringify(queue));
+}
+
 export default function Home() {
   const [currentEntity, setCurrentEntity] = useState("Repository"); 
   const [currentData, setCurrentData] = useState<any[]>([]);
@@ -10,6 +17,11 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState("info"); // "info" | "error" | "success"
+  
+  // Connection status
+  const [backendStatus, setBackendStatus] = useState<"checking" | "connected" | "disconnected">("checking");
+  const [pendingQueue, setPendingQueue] = useState<any[]>(loadQueue());
   
   // Submit Modal State
   const [showSubmitModal, setShowSubmitModal] = useState(false);
@@ -18,14 +30,48 @@ export default function Home() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
+    checkConnection();
     fetchData();
   }, []);
+
+  async function checkConnection() {
+    setBackendStatus("checking");
+    try {
+      const res = await fetch("/api/resources", { method: "HEAD", cache: "no-store" });
+      setBackendStatus(res.ok ? "connected" : "disconnected");
+    } catch {
+      setBackendStatus("disconnected");
+    }
+  }
+
+  async function flushQueue() {
+    const queue = loadQueue();
+    if (queue.length === 0) return;
+    const pw = prompt("Enter admin password to submit " + queue.length + " queued items:");
+    if (!pw) return;
+    let success = 0;
+    for (const item of queue) {
+      try {
+        const res = await fetch("/api/analyze", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url: item.url, password: pw })
+        });
+        if (res.ok) success++;
+      } catch {}
+    }
+    const remaining = queue.slice(success);
+    saveQueue(remaining);
+    setPendingQueue(remaining);
+    displayToast(`Submitted ${success} items. ${remaining.length > 0 ? remaining.length + " still queued." : "Queue empty!"}`, success > 0 ? "success" : "error");
+    fetchData();
+  }
 
   async function fetchData() {
     try {
       setLoading(true);
       setError("");
-      const response = await fetch("/api/resources");
+      const response = await fetch("/api/resources", { cache: "no-store" });
       if (!response.ok) throw new Error("Failed to fetch data from Teable API");
       
       const data = await response.json();
@@ -64,19 +110,19 @@ export default function Home() {
     return categoryMatch && searchMatch;
   });
 
-  const displayToast = (msg: string) => {
+  const displayToast = (msg: string, type = "info") => {
     setToastMessage(msg);
+    setToastType(type);
     setShowToast(true);
-    setTimeout(() => setShowToast(false), 3000);
+    if (type !== "error") setTimeout(() => setShowToast(false), 5000);
   };
 
   const handleLiveSubmit = async () => {
-    if (!submitUrl) return displayToast("Please enter a URL first.");
-    if (!adminPassword) return displayToast("Admin password required.");
+    if (!submitUrl) return displayToast("Please enter a URL first.", "error");
+    if (!adminPassword) return displayToast("Admin password required.", "error");
     
     setIsSubmitting(true);
     try {
-      // We will hook this up to the /api/analyze route shortly!
       const res = await fetch("/api/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -86,13 +132,18 @@ export default function Home() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to analyze resource.");
       
-      displayToast("Success! Resource added to Teable.");
+      displayToast("Success! Resource added to Teable.", "success");
       setShowSubmitModal(false);
       setSubmitUrl("");
       fetchData(); // Refresh the grid
     } catch (err: any) {
       console.error(err);
-      displayToast(`Error: ${err.message}`);
+      // Queue failed submission to localStorage for retry later
+      const queue = loadQueue();
+      queue.push({ url: submitUrl, time: new Date().toISOString() });
+      saveQueue(queue);
+      setPendingQueue(queue);
+      displayToast(`Backend offline. URL saved to retry queue (${queue.length} pending). Start the server and use "Flush Queue".`, "error");
     } finally {
       setIsSubmitting(false);
     }
@@ -304,7 +355,27 @@ export default function Home() {
         </div>
       </div>
 
-      <div className={`toast ${showToast ? 'show' : ''}`}>{toastMessage}</div>
+      {/* Connection Status Bar */}
+      <div className={`connection-bar ${backendStatus}`}>
+        <span className={`status-dot ${backendStatus}`}></span>
+        <span className="status-text">
+          {backendStatus === "connected" ? "Backend Connected" : backendStatus === "disconnected" ? "Backend Disconnected" : "Checking..."}
+        </span>
+        {backendStatus === "disconnected" && (
+          <span className="status-hint">Start the knowledge base server first</span>
+        )}
+        <button className="btn btn-sm btn-outline" onClick={checkConnection} style={{marginLeft: "auto"}}>Refresh</button>
+      </div>
+
+      {/* Pending Queue Banner */}
+      {pendingQueue.length > 0 && (
+        <div className="queue-banner">
+          <span className="queue-text">📋 {pendingQueue.length} submission(s) queued locally — not saved yet</span>
+          <button className="btn btn-sm btn-primary" onClick={flushQueue}>Flush Queue</button>
+        </div>
+      )}
+
+      <div className={`toast ${showToast ? 'show' : ''} toast-${toastType}`}>{toastMessage}</div>
     </div>
   );
 }
