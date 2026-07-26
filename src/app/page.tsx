@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 function loadQueue() {
   try { return JSON.parse(localStorage.getItem("submitQueue") || "[]"); } catch { return []; }
 }
-function saveQueue(queue) {
+function saveQueue(queue: any[]) {
   localStorage.setItem("submitQueue", JSON.stringify(queue));
 }
 
