@@ -10,7 +10,8 @@ export async function GET() {
     }
 
     // Call the Teable API
-    const response = await fetch(`https://app.teable.ai/api/table/${tableId}/record`, {
+    // Fetch all records — Teable defaults to 100, so we request up to 1000
+    const response = await fetch(`https://app.teable.ai/api/table/${tableId}/record?take=1000`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${apiKey}`,
